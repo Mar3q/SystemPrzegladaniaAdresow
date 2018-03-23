@@ -19,7 +19,7 @@ $ git clone https://gitlab.com/Gizan/UWM2018
 Przechodzimy do katalogu projektu i instalujemy zależności :
 ```bash
 $ cd ~
-$ cd ProjektZespolowy
+$ cd UWM2018
 $ composer update
 ```
 Konfigurujemy VirtalHosta :
@@ -37,9 +37,9 @@ Przykładowo:
 <VirtualHost *:80>
 
     ServerAdmin webmaster@localhost
-    DocumentRoot /home/marek/ProjektZespolowy/public
+    DocumentRoot /home/marek/UWM2018/public
     
-	<Directory /home/marek/ProjektZespolowy/public/>
+	<Directory /home/marek/UWM2018/public/>
         DirectoryIndex index.php
         AllowOverride All
         Require all granted
@@ -62,7 +62,7 @@ $ git clone https://gitlab.com/Gizan/UWM2018
 
 Wchodzimy w SHELL-a w XMAPP-ie i przechodzimy do katalogu projektu i instalujemy zależności :
 ```
-cd /xampp/htdocs/ProjektZespolowy
+cd /xampp/htdocs/UWM2018
 composer update
 ```
 Konfigurujemy VirtalHosta :
@@ -72,8 +72,8 @@ Dodajemy następujący wpis:
 
 (Należy pamiętać, aby odpowiednio skofigurować ścieżki do pliku DocumentRoot i Directory )
 <VirtualHost *:80>
-    DocumentRoot C:/xampp/htdocs/ProjektZespolowy/public
-	<Directory C:/xampp/htdocs/ProjektZespolowy/public/>
+    DocumentRoot C:/xampp/htdocs/UWM2018/public
+	<Directory C:/xampp/htdocs/UWM2018/public/>
         DirectoryIndex index.php
         AllowOverride All
         Require all granted
