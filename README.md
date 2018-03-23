@@ -1,7 +1,7 @@
 # Projekt Zespołowy grupy pierwszej.
 
 ## Opis
-Wstępnu Szkielet projektu z podstawowymi widokami, stworzony w Zend Framework 3.
+Wstępny Szkielet projektu z podstawowymi widokami, stworzony w Zend Framework 3.
 
 ## Wymagania : Apache 2.4, PHP 5.6 (lub nowszy) i MySQL 5.6 (lub nowszy), Composer.
 
