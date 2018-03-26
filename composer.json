@@ -30,7 +30,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Application\\": "module/Application/src/"
+            "Application\\": "module/Application/src/",
+"User\\": "module/User/src/",
+	"Import\\": "module/Import/src/",
+"Search\\": "module/Search/src/"
+
+
+
         }
     },
     "autoload-dev": {

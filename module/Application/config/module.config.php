@@ -33,27 +33,7 @@ return [
                         'action'     => 'index',
                     ],
                 ],
-            ],
-            'przeglad' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route'    => '/przeglad',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'przeglad',
-                    ],
-                ],
-            ],
-            'import' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route'    => '/import',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'import',
-                    ],
-                ],
-            ],
+            ],          
        ],
     ],
     'controllers' => [

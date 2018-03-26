@@ -31,4 +31,8 @@ return [
     'Zend\Validator',
     'ZendDeveloperTools',
     'Application',
+    'User',
+    'Import',
+    'Search',
+
 ];
