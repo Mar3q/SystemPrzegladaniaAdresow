@@ -75,12 +75,19 @@ Jeżeli wykonaliśmy wszystkie kroki instrukcji prawidłowo to powinniśmy zobac
 
 ## Instalacja na Windowsie (XAMPP)
 
+Dodajemy rozszerzenie `intl` do PHP-a
+```
+Wchodzimy w XAMPP Control Panel --> Apache --> Config --> PHP(php.ini)
+ctrl+f (;extension) 
+usuwamy średnik przy ;extension=intl 
+```
+
 Zakładamy, że xampp jest zainstalowany na "c:\xampp"
 
 Wchodzimy w Git Basha i pobieramy projekt do katalogu htdocs:
-```bash
-$ cd /c/xampp/htdocs
-$ git clone https://gitlab.com/Gizan/UWM2018
+```
+cd /c/xampp/htdocs
+git clone https://gitlab.com/Gizan/UWM2018
 ```
 
 Wchodzimy w SHELL-a w XMAPP-ie i przechodzimy do katalogu projektu i instalujemy zależności :
@@ -88,6 +95,32 @@ Wchodzimy w SHELL-a w XMAPP-ie i przechodzimy do katalogu projektu i instalujemy
 cd /xampp/htdocs/UWM2018
 composer update
 ```
+
+Przełączamy się na tryb deweloperski :
+```
+composer development-enable
+```
+
+Tworzymy plik local.php :
+```
+Idziemy do pliku C:\xampp\htdocs\UWM2018\config\autoload\local.php.dist 
+kopiujemy plik local.php.dist i zmieniamy jego nazwę na local.php
+```
+(Plik jest już skonfigurowany pod baze danych, którą bedziemy za chwilę tworzyć)
+
+Tworzymy przykładową bazę danych i użytkownika :
+```
+mysql -u root -p
+CREATE DATABASE userdemo;
+GRANT ALL PRIVILEGES ON userdemo.* TO userdemo@localhost identified by 'admin1';
+quit
+```
+Migrujemy dane do bazy danych, aby utworzyć tabele dla użytkowników :
+```
+cd vendor/bin
+doctrine-module migrations:migrate
+```
+
 Konfigurujemy VirtalHosta :
 ```
 Idziemy do pliku : C:\xampp\apache\conf\extra\httpd-vhosts.conf
