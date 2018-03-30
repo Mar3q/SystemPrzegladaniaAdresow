@@ -1,11 +1,9 @@
 # Projekt Zespołowy grupy pierwszej.
 
 ## Opis
-Wstępny Szkielet projektu z podstawowymi widokami, stworzony w Zend Framework 3.
+Wstępny Szkielet projektu z podstawowymi widokami oraz modułem logowania, stworzony w Zend Framework 3.
 
-## Wymagania : Apache 2.4, PHP 5.6 (lub nowszy) i MySQL 5.6 (lub nowszy), Composer.
-
-
+## Wymagania : Apache 2.4, PHP 5.6 (lub nowszy, z dodatkami `intl` i `gd`), MySQL 5.6 (lub nowszy) i Composer.
 
 
 ## Instalacja na Linuxie (Ubuntu)
@@ -22,13 +20,36 @@ $ cd ~
 $ cd UWM2018
 $ composer update
 ```
-Konfigurujemy VirtalHosta :
+Przełączamy się na tryb deweloperski :
+```bash
+$ composer development-enable
+```
 
+Tworzymy plik local.php :
+```bash
+$ cp config/autoload/local.php.dist config/autoload/local.php
+```
+(Jest już skonfigurowany pod baze danych, którą bedziemy za chwilę tworzyć)
+
+Tworzymy przykładową bazę danych i użytkownika :
+```bash
+$ mysql -u root -p
+$ CREATE DATABASE userdemo;
+$ GRANT ALL PRIVILEGES ON userdemo.* TO userdemo@localhost identified by 'admin1';
+$ quit
+```
+Migrujemy dane do bazy danych, aby utworzyć tabele dla użytkowników :
+```bash
+./vendor/bin/doctrine-module migrations:migrate
+```
+
+Konfigurujemy VirtalHosta :
 ```bash
 $ cd ~
 $ cd /etc/apache2/sites-available
 $ gedit 000-default.conf
 ```
+
 W pliku 000-default.conf dodajemy następujący wpis:
 (Należy pamiętać, aby odpowiednio skofigurować ścieżki do pliku DocumentRoot i Directory )
 
@@ -49,6 +70,8 @@ Przykładowo:
 ```
 
 Jeżeli wykonaliśmy wszystkie kroki instrukcji prawidłowo to powinniśmy zobaczyć Projekt pod adresem "http://localhost/".
+
+
 
 ## Instalacja na Windowsie (XAMPP)
 
