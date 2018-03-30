@@ -55,7 +55,8 @@ class Menu extends AbstractHelper
     {
         if (count($this->items)==0)
             return ''; // Do nothing if there are no items.
-           
+         
+			$result='';
         // Render items
         foreach ($this->items as $item) 
         {
