@@ -1,0 +1,53 @@
+<?php
+$this->headTitle('Użytkownicy');
+?>
+
+<h1>Użytkownicy </h1>
+
+<p>
+<a class="btn btn-default" href="
+    <?= $this->url('users', ['action'=>'add']); ?>">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Dodaj Użytkownika
+</a>
+</p>
+
+<table class="table table-striped">
+
+   <tr>
+        <th>ID</th>
+        <th>E-mail</th>
+        <th>Imie</th>
+        <th>Utworzono</th>
+        <th>Status</th>        
+        <th>Akcje</th>        
+    </tr>
+    
+    <?php foreach ($users as $user): ?>
+    
+    <tr>
+        <td><?= $this->escapeHtml($user->getId()); ?></td>
+        <td>
+            <a href="<?= $this->url('users', ['action'=>'view', 'id'=>$user->getId()]); ?>">
+                <?= $this->escapeHtml($user->getEmail()); ?>
+            </a> 
+        </td>
+        <td><?= $this->escapeHtml($user->getFullName()); ?></a> 
+        </td>
+        <td><?= $this->escapeHtml($user->getDateCreated()); ?></td>        
+        <td><?= $this->escapeHtml($user->getStatusAsString()); ?></td>
+        <td>
+            <a class="btn btn-info" href="<?= $this->url('users', 
+                    ['action'=>'edit', 'id'=>$user->getId()]); ?>">
+                <span class="glyphicon glyphicon-pencil" ></span> Edytuj
+            </a>
+            <a class="btn btn-default" href="<?= $this->url('users',
+                    ['action'=>'change-password', 'id'=>$user->getId()]); ?>">
+                <span class="glyphicon glyphicon-asterisk"></span> Zmień hasło
+            </a>
+        </td>    
+    </tr>
+        
+    <?php endforeach; ?>   
+    
+</table>
+

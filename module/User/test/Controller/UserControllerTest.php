@@ -5,13 +5,13 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace ApplicationTest\Controller;
+namespace UserTest\Controller;
 
-use Application\Controller\IndexController;
+use User\Controller\UserController;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
-class IndexControllerTest extends AbstractHttpControllerTestCase
+class UserControllerTest extends AbstractHttpControllerTestCase
 {
     public function setUp()
     {
@@ -33,9 +33,9 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
     {
         $this->dispatch('/', 'GET');
         $this->assertResponseStatusCode(200);
-        $this->assertModuleName('application');
-        $this->assertControllerName(IndexController::class); // as specified in router's controller name alias
-        $this->assertControllerClass('IndexController');
+        $this->assertModuleName('admin');
+        $this->assertControllerName(UserController::class); // as specified in router's controller name alias
+        $this->assertControllerClass('UserController');
         $this->assertMatchedRouteName('home');
     }
 

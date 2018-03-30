@@ -1,0 +1,31 @@
+<?php
+$this->headTitle('Thank You');
+?>
+
+<div class="row">
+<div class="col-md-offset-4 col-md-5">
+<h1>Reset Hasła</h1>
+
+<?php if ($id=='sent'): ?>
+<p>
+    Link do resetowania hasła wysłano na podany adres email.
+</p>
+<?php elseif ($id=='invalid-email'): ?>
+<p>
+    Nie istnieje użytkownik z takim emailem.
+</p>
+<?php elseif ($id=='set'): ?>
+<p>
+    Ustawiono nowe hasło.
+</p>
+<p>
+    Powrót do<a href="<?= $this->url('login'); ?>">panelu logowania</a>.
+</p>
+<?php elseif ($id=='failed'): ?>
+
+    Zły klucz. Wpisz  
+    <a href="<?= $this->url('reset-password') ?>">tutaj</a> i sprubój jeszcze raz.
+</p>
+<?php endif; ?>
+</div>
+</div>    
