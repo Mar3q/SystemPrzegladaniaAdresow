@@ -18,11 +18,13 @@ return [
         'connection' => [
             'orm_default' => [
                 'driverClass' => PDOMySqlDriver::class,
+
                 'params' => [
                     'host'     => 'localhost',                    
                     'user'     => 'nesta2_grupa1',
                     'password' => '3rugDJ4t',
                     'dbname'   => 'nesta2_grupa1',
+                    'charset'  => 'utf8',
                 ]
             ],            
         ],        

@@ -1,0 +1,106 @@
+<h1>
+    <a href="<?= $this->url('files', ['action'=>'upload']); ?>"
+       class="btn btn-primary" role="button"  >Wczytaj nowy plik </a>
+
+
+</h1>
+
+
+
+
+
+
+
+<?php if(count($files)==0): ?>
+
+    <p>
+        <i>Brak plików .zip</i>
+    </p>
+
+<?php else: ?>
+
+
+
+
+
+            <table style="width:100%">
+                <caption><h1>Lista plików:</h1></caption>
+                    <tr>
+                        <th><h2>Nazwa pliku:
+
+                                <h2></th>
+                        <th>
+                            <?php ?>
+                            <a href="<?= $this->url('files', ['action'=>'deletezipfilesdir']); ?>" style="text-decoration:none"
+                               class="button button3"> Usuń wszystkie pliki</a>
+                        </th>
+                    </tr>
+            <?php foreach($files as $file): ?>
+                <tr>
+                    <th>
+                        <h3><i><?php echo $file; ?></i></h3>
+                    </th>
+
+                    <th>
+                        <a href="<?= $this->url('files', ['action'=>'deletezipfile'],['query'=>['name'=>$file]]); ?>" style="text-decoration:none"
+                           class="button button3"> Usuń</a>
+                        <a href="<?= $this->url('files', ['action'=>'importzip'],['query'=>['name'=>$file]]); ?>" style="text-decoration:none"
+                           class="button button1"> Importuj paczke do Bazy danych</a>
+                        <a href="<?= $this->url('files', ['action'=>'unpack'],['query'=>['name'=>$file]]); ?>" style="text-decoration:none"
+                           class="button button1"> Rozpakuj</a>
+
+
+
+
+
+
+                    </th>
+                </tr>
+
+
+
+            <?php endforeach; ?>
+            </table>
+<?php endif; ?>
+
+    <?php if(count($filesUnpacked)==0): ?>
+
+        <p>
+            <i>Brak plików .xml</i>
+        </p>
+
+    <?php else: ?>
+
+    <table style="width:100%">
+        <caption><h1>Lista rozpakowanych plików:</h1></caption>
+        <tr>
+            <th><h2>Nazwa pliku:<h2></th>
+            <th>
+                    <?php ?>
+                    <a href="<?= $this->url('files', ['action'=>'deleteunpackedfilesdir']); ?>" style="text-decoration:none"
+                       class="button button3">Usuń wszystkie pliki</a>
+                </th>
+        </tr>
+        <?php foreach($filesUnpacked as $file): ?>
+            <tr>
+                <th>
+                    <h3><i><?php echo $file; ?></i></h3>
+                </th>
+
+                <th>
+                    <a href="<?= $this->url('files', ['action'=>'deleteunpackedfile'],['query'=>['name'=>$file]]); ?>" style="text-decoration:none"
+                       class="button button3">Usuń</a>
+
+                    <a href="<?= $this->url('files', ['action'=>'importxml'],['query'=>['name'=>$file]]); ?>" style="text-decoration:none"
+                       class="button button1">Importuj do Bazy danych</a>
+
+                    <a href="<?= $this->url('files', ['action'=>'readxml'],['query'=>['name'=>$file]]); ?>" style="text-decoration:none"
+                       class="button button1">Podejrzyj xml</a>
+                </th>
+            </tr>
+
+        <?php endforeach; ?>
+    </table>
+
+
+<?php endif; ?>

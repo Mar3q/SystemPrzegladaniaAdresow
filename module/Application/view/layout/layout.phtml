@@ -17,6 +17,7 @@
             ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
         ?>
 
+
         <!-- Scripts -->
         <?= $this->headScript()
             ->prependFile($this->basePath('js/bootstrap.min.js'))
@@ -43,7 +44,7 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-right">
                           <li>
-                            <a><?php echo $this->mainMenu()->render();?><span class="caret"></span></a>               
+                            <a><?php echo $this->mainMenu()->render();?><span class="caret"></span></a>
                           </li>
                         </ul>
                   </div><!-- /.navbar-collapse -->
@@ -56,19 +57,20 @@
                     <a href="<?= $this->url('home') ?>" class="active">Menu</a>
                     <a href="<?= $this->url('home') ?>">Informacje</a>
                     <a href="<?= $this->url('search') ?>">Przegladaj</a>
-                    <a href="<?= $this->url('import') ?>">Importuj</a>
+                    <a href="<?= $this->url('files') ?>">Importuj</a>
                     <a href="<?= $this->url('users') ?>">Użytkownicy</a>         
             </div>
 
             <!-- Content page-->
             <div id="tresc" class="col-md-10" style="border-left: 5px solid blue; border-top: 5px solid blue; border-bottom: 5px solid blue; border-right: 5px solid blue;">
                 <?= $this->content ?>
-                <hr>
+
                 <footer>
+                    <hr>
                     <p>&copy;     <?= date('Y') ?> by Grupa pierwsza :-) </p>
                 </footer>
             </div>
-            
+
         
         
         

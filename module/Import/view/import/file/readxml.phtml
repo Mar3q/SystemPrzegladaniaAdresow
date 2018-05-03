@@ -1,0 +1,90 @@
+<?php
+if(!empty($blad)) {
+    echo "<br>  <h3>$blad<h3>";
+    echo "<h3>Nazwa pliku = <i><b>$fileName</b></i></h3>";
+    return;
+}
+?>
+
+
+
+
+<h1>Informacje o pliku : </h1>
+<h3>Nazwa pliku = <?= "<i><b>".$fileName ."</b></i>"?></h3>
+<h3>Plik zawiera lisę : = <?php  if($adres['xmlName']=="lista-ulic") echo "<i><b>ulic</b></i>"; elseif($adres['xmlName']=="lista-miejscowosci") echo "<i><b>miejscowości</b></i>"; ?></h3>
+
+<style>
+table, th, td {
+border: 2px solid grey;
+}
+</style>
+
+<?php
+$listaUlic = false;
+$listaMiejscowosci = false;
+if($adres['xmlName']=="lista-ulic")
+    $listaUlic = true;
+elseif ($adres['xmlName']=="lista-miejscowosci")
+    $listaMiejscowosci = true;
+?>
+
+
+
+
+
+<table style="width:50%">
+    <tr>
+        <th>Id</th>
+        <th>Teryt</th>
+        <th>Województwo </th>
+        <th>Powiat </th>
+        <th>Gmina </th>
+        <th>Miejscowosc </th>
+        <?php if($listaUlic) echo"<th>Ulica </th>" ?>
+        <th>cyklZyciaOd </th>
+        <th>cyklZyciaDo </th>
+
+    </tr>
+
+<?php
+if(!empty($adres)) {
+
+    echo "<h3> Liczba wierszy w pliku  = " . "<i><b>".$adres['xmlLength'] ."</b><i/>" . "</h3>";
+    echo "<h3> Przestrzen nazw pliku  : ". "'<i><b>". current(array_keys($adres['xmlNamespaces'])) ."</b><i/>' (". $adres['xmlNamespaces'][current(array_keys($adres['xmlNamespaces']))] . ")". "</h3><br>";
+
+
+
+
+
+    for ($i = 0; $i < $adres['xmlLength']; $i++) {
+
+        echo"<tr>";
+            echo "<th>"; echo $i; echo"</th>";
+        echo "<th>"; echo $adres['miejscIdTeryt'][$i]; echo"</th>";
+            echo "<th>"; echo $adres['wojNazwa'][$i]; echo"</th>";
+            echo "<th>"; echo $adres['powNazwa'][$i]; echo"</th>";
+            echo "<th>"; echo $adres['gmNazwa'][$i]; echo"</th>";
+            echo "<th>"; echo $adres['miejscNazwa'][$i]; echo"</th>";
+    if($listaUlic){ echo "<th>"; echo $adres['ulNazwaGlowna'][$i]; echo"</th>";};
+
+            echo "<th>"; echo $adres['cyklZyciaOd'][$i]; echo"</th>";
+            echo "<th>"; echo $adres['cyklZyciaDo'][$i]; echo"</th>";
+
+
+
+        echo "</tr>";
+    }
+
+    echo "</table>";
+}
+?>
+
+
+
+
+
+
+
+
+
+

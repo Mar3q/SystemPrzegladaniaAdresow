@@ -1,8 +1,9 @@
 <?php
 namespace User\Service\Factory;
 
-use Interop\Container\ContainerInterface;
 use User\Service\UserManager;
+use Interop\Container\ContainerInterface;
+
 
 /**
  * This is the factory class for UserManager service. The purpose of the factory
