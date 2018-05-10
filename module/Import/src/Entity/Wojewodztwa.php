@@ -4,8 +4,7 @@ namespace Import\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * This class represents a registered user.
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="\Search\Repository\WojewodztwaRepository")
  * @ORM\Table(name="wojewodztwa")
  */
 class Wojewodztwa

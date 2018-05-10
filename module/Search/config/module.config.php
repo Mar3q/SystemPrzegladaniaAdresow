@@ -2,29 +2,21 @@
 namespace Search;
 
 use Zend\Router\Http\Literal;
+use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 return [
-'controllers' => [
-        'factories' => [
-            Controller\ListController::class => InvokableFactory::class,
-        ],
-    ],
-    // This lines opens the configuration for the RouteManager
+
     'router' => [
-        // Open configuration for all possible routes
         'routes' => [
-            // Define a new route called "blog"
             'search' => [
-                // Define a "literal" route type:
-                'type' => Literal::class,
-                // Configure the route itself
+                'type' => Segment::class,
                 'options' => [
-                    // Listen to "/blog" as uri:
-                    'route' => '/search',
-                    // Define default controller and action to be called when
-                    // this route is matched
+                    'route' => '/search[/:action]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ],
                     'defaults' => [
-                        'controller' => Controller\ListController::class,
+                        'controller' => Controller\SearchController::class,
                         'action'     => 'index',
                     ],
                 ],
@@ -37,4 +29,20 @@ return [
             __DIR__ . '/../view',
         ],
     ],
+    'controllers' => [
+        'factories' => [
+            Controller\SearchController::class =>  Controller\Factory\SearchControllerFactory::class,
+        ],
+    ],
+    'service_manager' => [
+        // ...
+        'factories' => [
+            // Register the FileManager service
+            Service\SearchManager::class => InvokableFactory::class,
+            Service\SearchManager::class => Service\Factory\SearchManagerFactory::class,
+
+        ],
+    ],
+
+
 ];

@@ -5,35 +5,27 @@ use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\FileInput;
 
-/**
- * The FileForm form model is used for uploading an image file.
- */
+//Formularz wysyłania plików.
 class FileForm extends Form
 {
-    /**
-     * Constructor.
-     */
+
     public function __construct()
     {
-        // Define form name
+
         parent::__construct('image-form');
 
-        // Set POST method for this form
         $this->setAttribute('method', 'post');
 
-        // Set binary content encoding
         $this->setAttribute('enctype', 'multipart/form-data');
 
         $this->addElements();
         $this->addInputFilter();
     }
 
-    /**
-     * This method adds elements to form (input fields and submit button).
-     */
+
     protected function addElements()
     {
-        // Add "file" field
+        // Przycisk Przegladaj
         $this->add([
             'type'  => 'file',
             'name' => 'file',
@@ -48,7 +40,7 @@ class FileForm extends Form
             ],
         ]);
 
-        // Add the submit button
+        //Przycisk wyslij
         $this->add([
             'type'  => 'submit',
             'name' => 'submit',
@@ -60,9 +52,7 @@ class FileForm extends Form
 
     }
 
-    /**
-     * This method creates input filter (used for form filtering/validation).
-     */
+
     private function addInputFilter()
     {
         $inputFilter = new InputFilter();
@@ -78,7 +68,7 @@ class FileForm extends Form
                 [
                     'name'    => 'FileMimeType',
                     'options' => [
-                        'mimeType'  => ['image/jpeg', 'image/png','image/jpg','rar','zip']
+                        'mimeType'  => ['zip']
                     ]
                 ],
             ],

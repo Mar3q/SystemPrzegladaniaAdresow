@@ -26,48 +26,37 @@ class FileManager
         $this->entityManager = $entityManager;
     }
 
-    //--------------------------The directory where we save files--------------------------------------------------------
+    //Ścieżki do przechowywania plików.
     private $zipFilesDir = './data/upload/';
     private $unpackedFilesDir = './data/unziped/';
     private $temporaryFilesDir = './data/temp/';
 
 
-    //--------------------------Primary file functions------------------------------------------------------------------
-    public function getZipFilesDir()
-    {
+    //Podstawowe operacje na plikach.
+    public function getZipFilesDir(){
         return $this->zipFilesDir;
     }
-
-    public function getUnpackedFilesDir()
-    {
+    public function getUnpackedFilesDir(){
         return $this->unpackedFilesDir;
     }
-
-    public function getTemporaryFilesDir()
-    {
+    public function getTemporaryFilesDir(){
         return $this->temporaryFilesDir;
     }
-
-    public function getZipFilePathByName($fileName)
-    {
-        // Take some precautions to make file name secure
-        $fileName = str_replace("/", "", $fileName);  // Remove slashes
-        $fileName = str_replace("\\", "", $fileName); // Remove back-slashes
-        // Return concatenated directory name and file name.
+    public function getZipFilePathByName($fileName){
+        $fileName = str_replace("/", "", $fileName);
+        $fileName = str_replace("\\", "", $fileName);
         return $this->zipFilesDir . $fileName;
     }
 
-    public function getUnpackedFilePathByName($fileName)
-    {
-        $fileName = str_replace("/", "", $fileName);  // Remove slashes
-        $fileName = str_replace("\\", "", $fileName); // Remove back-slashes
+    public function getUnpackedFilePathByName($fileName){
+        $fileName = str_replace("/", "", $fileName);
+        $fileName = str_replace("\\", "", $fileName);
         return $this->unpackedFilesDir . $fileName;
     }
 
-    public function getTemporaryFilePathByName($fileName)
-    {
-        $fileName = str_replace("/", "", $fileName);  // Remove slashes
-        $fileName = str_replace("\\", "", $fileName); // Remove back-slashes
+    public function getTemporaryFilePathByName($fileName){
+        $fileName = str_replace("/", "", $fileName);
+        $fileName = str_replace("\\", "", $fileName);
         // Return concatenated directory name and file name.
         return $this->temporaryFilesDir . $fileName;
     }
@@ -76,26 +65,28 @@ class FileManager
     {
         if (!is_dir($this->zipFilesDir)) {
             if (!mkdir($this->zipFilesDir)) {
-                throw new \Exception('Could not create directory for uploads: ' . error_get_last());
+                throw new \Exception('Wystąpił problem z utworzeniem katalogu na pliki: ' . error_get_last());
             }
         }
-        // Scan the directory and create the list of uploaded files.
+
+        //Skanuje katalog i tworzy liste wrzuconych plików
         $files = array();
         $handle = opendir($this->zipFilesDir);
         while (false !== ($entry = readdir($handle))) {
             if ($entry == '.' || $entry == '..')
-                continue; // Skip current dir and parent dir.
+                continue;
             $files[] = $entry;
         }
-        // Return the list of uploaded files.
+        //Zwraca listę plików zip.
         return $files;
     }
 
+    //Tak jak funkcja powyżej tylko dla rozpakowanych plików.
     public function getUnpackedFiles()
     {
         if (!is_dir($this->unpackedFilesDir)) {
             if (!mkdir($this->unpackedFilesDir)) {
-                throw new \Exception('Could not create directory for uploads: ' . error_get_last());
+                throw new \Exception('Wystąpił problem z utworzeniem katalogu na pliki: '  . error_get_last());
             }
         }
         $files = array();
@@ -109,11 +100,12 @@ class FileManager
         return $files;
     }
 
+    //Tak jak funkcja powyżej tylko dla "tymczasowych" plików.
     public function getTemporaryFiles()
     {
         if (!is_dir($this->temporaryFilesDir)) {
             if (!mkdir($this->temporaryFilesDir)) {
-                throw new \Exception('Could not create directory for uploads: ' . error_get_last());
+                throw new \Exception('Wystąpił problem z utworzeniem katalogu na pliki: '  . error_get_last());
             }
         }
         $files = array();
@@ -126,17 +118,12 @@ class FileManager
         return $files;
     }
 
-    public function getFileInfo($filePath)
-    {
-        // Try to open file        
+    public function getFileInfo($filePath){
         if (!is_readable($filePath)) {
             return false;
         }
 
-        // Get file size in bytes.
         $fileSize = filesize($filePath);
-
-        // Get MIME type of the file.
         $finfo = finfo_open(FILEINFO_MIME);
         $mimeType = finfo_file($finfo, $filePath);
         if ($mimeType === false)
@@ -147,33 +134,28 @@ class FileManager
         ];
     }
 
-    public function getFileContent($filePath)
-    {
+    public function getFileContent($filePath){
         return file_get_contents($filePath);
     }
 
 
-    //--------------------------------------------delete file/dir functions---------------------------------------------
-    public function deleteZipFile($fileName)
-    {
+    //Usuwanie plików i katalogów.
+    public function deleteZipFile($fileName){
         if (is_file($this->zipFilesDir . $fileName))
             unlink($this->zipFilesDir . $fileName);
     }
 
-    public function deleteUnpackedFile($fileName)
-    {
+    public function deleteUnpackedFile($fileName){
         if (is_file($this->unpackedFilesDir . $fileName))
             unlink($this->unpackedFilesDir . $fileName);
     }
 
-    public function deleteTemporaryFile($fileName)
-    {
+    public function deleteTemporaryFile($fileName){
         if (is_file($this->temporaryFilesDir . $fileName))
             unlink($this->temporaryFilesDir . $fileName);
     }
 
-    public function deleteUnpackedFilesDir()
-    {
+    public function deleteUnpackedFilesDir(){
         $dir = $this->unpackedFilesDir;
         foreach (scandir($dir) as $file) {
             if ('.' === $file || '..' === $file) continue;
@@ -183,8 +165,7 @@ class FileManager
         rmdir($dir);
     }
 
-    public function deleteZipFilesDir()
-    {
+    public function deleteZipFilesDir(){
         $dir = $this->zipFilesDir;
         foreach (scandir($dir) as $file) {
             if ('.' === $file || '..' === $file) continue;
@@ -194,8 +175,7 @@ class FileManager
         rmdir($dir);
     }
 
-    public function deleteTemporaryFilesDir()
-    {
+    public function deleteTemporaryFilesDir(){
         $dir = $this->temporaryFilesDir;
         foreach (scandir($dir) as $file) {
             if ('.' === $file || '..' === $file) continue;
@@ -206,14 +186,14 @@ class FileManager
     }
 
 
-    //-------------------------zip functions----------------------------------------------------------------------------
+    //Rozpakowanie plików zip.
     function unpackZipFile($fileName)
     {
         $zip = new ZipArchive();
         $fileName = $this->getZipFilePathByName($fileName);
 
         if ($zip->open($fileName) !== TRUE) {
-            echo "File not found<br>";
+            echo "Brak pliku<br>";
         } else {
             set_time_limit(5000);
             $zip->extractTo($this->unpackedFilesDir);
@@ -222,29 +202,24 @@ class FileManager
     }
 
 
-    //--------------------------xml functions---------------------------------------------------------------------------
-    public function loadXml($fileName)
-    {
+    //Podstawowe operacje na plikach xml.
+    public function loadXml($fileName){
         $xmlObiect = simplexml_load_file($fileName);
         return $xmlObiect;
     }
 
-    public function getXmlNamespaces($fileName)
-    {
+    public function getXmlNamespaces($fileName){
         $xmlNamespaces = $this->loadXml($fileName)->getNamespaces(true);
         return $xmlNamespaces;
     }
 
-    public function getXmlName($fileName)
-    {
+    public function getXmlName($fileName){
         $xmlName= $this->loadXml($fileName);
         $xmlName =  $xmlName->getName();
         return $xmlName;
     }
 
-
-    public function getXmlLength($fileName)
-    {
+    public function getXmlLength($fileName){
         $xmlObiect = $this->loadXml($fileName);
         if (!empty(count($xmlObiect->children($this->getXmlNamespaces($fileName)[current(array_keys($this->getXmlNamespaces($fileName)))])))) {
             $xmlLength = count($xmlObiect->children($this->getXmlNamespaces($fileName)[current(array_keys($this->getXmlNamespaces($fileName)))]));
@@ -254,11 +229,11 @@ class FileManager
     }
 
 
+    //Pobiera wartości z plików xml i zapisuje w tablicach.
     public function converXmlToArray($fileName)
     {
 
-
-
+        echo "<hr>";
         echo "<b>Parsowanie pliku = </b>" . $fileName . "<br>";
 
 
@@ -273,27 +248,23 @@ class FileManager
         $xmlName = $this->getXmlName($fileName);
 
 
-        if($xmlName=="lista-ulic" ||  $xmlName=="lista-miejscowosci");
+        //Sprawdza czy plik na pewno dotyczy miejscowosci lub ulic.
+        if($xmlName=="lista-ulic" || $xmlName=="lista-miejscowosci");
         else
             return ;
 
 
-
-
-
-
-        if (!empty($xmlLength = $this->getXmlLength($fileName))) {
-
-            if (!empty($xmlLength)) {
+        //Sprawdza długość pliku, bo niektóre pliki xml w paczkach zip sa puste.
+        if (!empty($xmlLength = $this->getXmlLength($fileName)))
+        {
 
                 $time_start = microtime(true);
-
                 for ($i = 0; $i < $xmlLength; $i++) {
 
+                    //Przechodzi na 2 poziom zagnieżdżenia w pliku xml
                     $adres = $xmlObiect->children($xmlNamespaces[current(array_keys($xmlNamespaces))])[$i]->children($xmlNamespaces[current(array_keys($xmlNamespaces))]);
 
-
-
+                    //Rzutuje wartości z obiektu Simplexml na string i zapisuje w odpowiednich tabelach.
                         $cyklZyciaDo[] = (string)$adres->cyklZyciaDo;
                         $cyklZyciaOd[] = (string)$adres->cyklZyciaOd;
 
@@ -322,8 +293,6 @@ class FileManager
                         $miejscIIPPn[] = (string)$adres->miejscIIPPn;
                         $miejscIIPId[] = (string)$adres->miejscIIPId;
 
-
-
                         $nrUlicy[] = (string)$adres->nrUlicy;
                         $ulIdTeryt[] = (string)$adres->ulIdTeryt;
                         $ulNazwaGlowna[] = (string)$adres->ulNazwaGlowna;
@@ -335,62 +304,71 @@ class FileManager
 
                 $time_end = microtime(true);
                 $execution_time = ($time_end - $time_start) / 360;
-                echo '<b>Czas przetwarzania pliku = </b> ' . $execution_time . ' Sec' . "<br>";
-            }
 
-            return [
+                echo '<b>Plik zostawł przetworzony.</b> ' . $execution_time . '(sekund)' . "<br>";
 
-                'wojIdTeryt' => $wojIdTeryt,
-                'wojNazwa' => $wojNazwa,
-                'wojIIPWersja' => $wojIIPWersja,
-                'wojIIPPn' => $wojIIPPn,
-                'wojIIPId' => $wojIIPId,
+                return [
 
-                'powIdTeryt' => $powIdTeryt,
-                'powNazwa' => $powNazwa,
-                'powIIPWersja' => $powIIPWersja,
-                'powIIPPn' => $powIIPPn,
-                'powIIPId' => $powIIPId,
+                    'wojIdTeryt' => $wojIdTeryt,
+                    'wojNazwa' => $wojNazwa,
+                    'wojIIPWersja' => $wojIIPWersja,
+                    'wojIIPPn' => $wojIIPPn,
+                    'wojIIPId' => $wojIIPId,
 
-                'gmIdTeryt' => $gmIdTeryt,
-                'gmNazwa' => $gmNazwa,
-                'gmIIPWersja' => $gmIIPWersja,
-                'gmIIPPn' => $gmIIPPn,
-                'gmIIPId' => $gmIIPId,
+                    'powIdTeryt' => $powIdTeryt,
+                    'powNazwa' => $powNazwa,
+                    'powIIPWersja' => $powIIPWersja,
+                    'powIIPPn' => $powIIPPn,
+                    'powIIPId' => $powIIPId,
 
-                'miejscIdTeryt' => $miejscIdTeryt,
-                'miejscNazwa' => $miejscNazwa,
-                'miejscRodzaj' => $miejscRodzaj,
-                'miejscIIPWersja' => $miejscIIPWersja,
-                'miejscIIPPn' => $miejscIIPPn,
-                'miejscIIPId' => $miejscIIPId,
+                    'gmIdTeryt' => $gmIdTeryt,
+                    'gmNazwa' => $gmNazwa,
+                    'gmIIPWersja' => $gmIIPWersja,
+                    'gmIIPPn' => $gmIIPPn,
+                    'gmIIPId' => $gmIIPId,
 
-                'cyklZyciaDo' => $cyklZyciaDo,
-                'cyklZyciaOd' => $cyklZyciaOd,
+                    'miejscIdTeryt' => $miejscIdTeryt,
+                    'miejscNazwa' => $miejscNazwa,
+                    'miejscRodzaj' => $miejscRodzaj,
+                    'miejscIIPWersja' => $miejscIIPWersja,
+                    'miejscIIPPn' => $miejscIIPPn,
+                    'miejscIIPId' => $miejscIIPId,
 
-                'ulIdTeryt' => $ulIdTeryt,
-                'ulNazwaGlowna' => $ulNazwaGlowna,
-                'nrUlicy' => $nrUlicy,
-                'ulTyp' => $ulTyp,
-                'ulIIPWersja' => $ulIIPWersja,
-                'ulIIPPn' => $ulIIPPn,
-                'ulIIPId' => $ulIIPId,
+                    'cyklZyciaDo' => $cyklZyciaDo,
+                    'cyklZyciaOd' => $cyklZyciaOd,
+
+                    'ulIdTeryt' => $ulIdTeryt,
+                    'ulNazwaGlowna' => $ulNazwaGlowna,
+                    'nrUlicy' => $nrUlicy,
+                    'ulTyp' => $ulTyp,
+                    'ulIIPWersja' => $ulIIPWersja,
+                    'ulIIPPn' => $ulIIPPn,
+                    'ulIIPId' => $ulIIPId,
 
 
-                'xmlLength' => $xmlLength,
-                'xmlNamespaces' => $xmlNamespaces,
-                'xmlName' => $xmlName
+                    'xmlLength' => $xmlLength,
+                    'xmlNamespaces' => $xmlNamespaces,
+                    'xmlName' => $xmlName
 
-            ];
+                ];
         } else
-            return;
+            {
+                echo "Plik jest pusty i nie został przetworzony.";
+                return;
+        }
+
     }
 
+
+    //Wrzuca pliki xml do bazy.
     public function importXml($fileName)
     {
 
         $time_start = microtime(true);
-        if (!empty($adres = $this->converXmlToArray($fileName))) {
+
+        // Wykona sie jesli converXmlToArray zwroci dane (dla pustego pliku xml funkcja converXmlToArrayzwraca null)
+        if (!empty($adres = $this->converXmlToArray($fileName)))
+        {
 
             $wojewodztwaRepo = $this->entityManager->getRepository(Wojewodztwa::class);
             $powiatyRepo = $this->entityManager->getRepository(Powiaty::class);
@@ -400,13 +378,12 @@ class FileManager
 
             $user = $this->authService->getIdentity();
             $xmlName = $adres['xmlName'];
-            $time_start = microtime(true);
 
 
-            for ($i = 0; $i < $adres['xmlLength']; $i++) {
+            for ($i = 0; $i < $adres['xmlLength']; $i++)
+            {
 
-                //echo $i."<br>";
-
+                //Aktualizacja tabeli Wojewodztwa
                 $wojewodztwa = new Wojewodztwa();
 
                 $wojewodztwa->setwojIdTeryt($adres['wojIdTeryt'][$i]);
@@ -419,14 +396,13 @@ class FileManager
 
                 $wojIdTeryt = $wojewodztwaRepo->findOneBy(['wojIdTeryt' => $adres['wojIdTeryt'][$i]]);
                 if ($wojIdTeryt == null) {
-                    // Add the entity to the entity manager.
                     $this->entityManager->persist($wojewodztwa);
-                    // Apply changes to database.
+
                     $this->entityManager->flush();
                 }
                 unset($wojewodztwa);
 
-
+                //Aktualizacja tabeli Powiaty
                 $powiaty = new Powiaty();
 
                 $powiaty->setpowIdTeryt($adres['powIdTeryt'][$i]);
@@ -447,7 +423,7 @@ class FileManager
                 }
                 unset($powiaty);
 
-
+                //Aktualizacja tabeli Gminy
                 $gminy = new Gminy();
                 $gminy->setgmIdTeryt($adres['gmIdTeryt'][$i]);
                 $gminy->setpowIdTeryt($adres['powIdTeryt'][$i]);
@@ -468,28 +444,49 @@ class FileManager
                 unset($gminy);
 
 
-//-----------------------------------------Logika dla aktualizacji miejscowości -------------------------------------------------
-
+                //Logika dla aktualizacji miejscowości------------------------------
                 //Aktualizuj miejscowosci tylko wtedy gdy to paczka z miejscowosciami
-                if ($xmlName == 'lista-miejscowosci') {
-
-                    //Dodaje tylko wtedy gdy istnieje gmina dla miejscowossci w bazie
-                    //$gm = $gminyRepo->findOneBy(['gmIdTeryt' => $adres['gmIdTeryt'][$i]]);
-
-                    //if ($gm)
-                    //{
+                if ($xmlName == 'lista-miejscowosci')
+                {
                     //Dodaje tylko aktualne rekordy z pliku xml
-                    if ($adres['cyklZyciaDo'][$i] == null) {
-
-                        // $mc = $miejscowosciRepo->findOneBy(['miejscIIPId' => $adres['miejscIIPId'][$i]]);
-
-                        // Do poprawki baza danych (mogą być różne IdTeryt)!
-                          $mc2 = $miejscowosciRepo->findOneBy(['miejscIdTeryt' => $adres['miejscIdTeryt'][$i]]);
-
-
+                    if ($adres['cyklZyciaDo'][$i] == null)
+                    {
+                        $mc2 = $miejscowosciRepo->findOneBy(['miejscIdTeryt' => $adres['miejscIdTeryt'][$i]]);
                         //Jesli tego rekordu nie ma to dodaje
-                          if ((!$mc2))
-                         {
+                        if ((!$mc2))
+                        {
+                            $miejscowosci = new Miejscowosci();
+                            $miejscowosci->setmiejscIdTeryt($adres['miejscIdTeryt'][$i]);
+                            $miejscowosci->setgmIdTeryt($adres['gmIdTeryt'][$i]);
+                            $miejscowosci->setmiejscNazwa($adres['miejscNazwa'][$i]);
+                            $miejscowosci->setmiejscRodzaj($adres['miejscRodzaj'][$i]);
+                            $miejscowosci->setmiejscIIPWersja($adres['miejscIIPWersja'][$i]);
+                            $miejscowosci->setmiejscIIPId($adres['miejscIIPId'][$i]);
+                            $miejscowosci->setmiejscIIPPn($adres['miejscIIPPn'][$i]);
+                            $miejscowosci->setcyklZyciaOd($adres['cyklZyciaOd'][$i]);
+                            $miejscowosci->setcyklZyciaDo($adres['cyklZyciaDo'][$i]);
+                            $miejscowosci->setAddedBy($user);
+                            $miejscowosci->setModifyBy($user);
+
+                            $this->entityManager->persist($miejscowosci);
+                            $this->entityManager->flush();
+                            unset($miejscowosci);
+                        }
+                    }
+                }
+
+
+                //Logika dla aktualizacji ulic------------------------
+
+                //Aktualizuj ulice tylko wtedy gdy to paczka z ulicami
+                if ($xmlName == 'lista-ulic')
+                {
+                    //Sprawdzam czy istnieje miejscowosc dla ulicy(w przypadku gdy uzytkownik najpierw wrzuci paczke z ulicami zamiast z miejscowosciami)
+                    $mc = $miejscowosciRepo->findOneBy(['miejscIdTeryt' => $adres['miejscIdTeryt'][$i]]);
+
+                    //Jeśli nie ma to dodaje miejscowosc dla ulicy
+                    if (!$mc)
+                    {
                         $miejscowosci = new Miejscowosci();
 
                         $miejscowosci->setmiejscIdTeryt($adres['miejscIdTeryt'][$i]);
@@ -507,62 +504,12 @@ class FileManager
                         $this->entityManager->persist($miejscowosci);
                         $this->entityManager->flush();
                         unset($miejscowosci);
-
-                        }
-                        // }
-
-                        //Usuwam nieaktualne rekordy z bazy danych.
-                        // if ($adres['cyklZyciaDo'][$i] != null) {
-
-                        //  $ul = $uliceRepo->findOneBy(['ulIIPId' => $adres['ulIIPId'][$i]]);
-
-                        // if ($ul) {
-                        //        $this->entityManager->remove($ul);
-                        //         $this->entityManager->flush();
-                        //   }
-                        // }
-
-
-                    }
-                }
-
-
-//----------------------------------------------------------------------------------------------------------------------
-
-
-//-----------------------------------------Logika dla aktualizacji ulic -------------------------------------------------
-
-
-                //Aktualizuj ulice tylko wtedy gdy to paczka z ulicami
-                if ($xmlName == 'lista-ulic') {
-                    //Sprawdzam czy istnieje miejscowosc dla ulicy
-                    $mc = $miejscowosciRepo->findOneBy(['miejscIdTeryt' => $adres['miejscIdTeryt'][$i]]);
-
-                    //Jeśli nie ma to dodaje miejscowosc dla ulicy
-                    if (!$mc) {
-                        $miejscowosci = new Miejscowosci();
-
-                        $miejscowosci->setmiejscIdTeryt($adres['miejscIdTeryt'][$i]);
-                        $miejscowosci->setgmIdTeryt($adres['gmIdTeryt'][$i]);
-                        $miejscowosci->setmiejscNazwa($adres['miejscNazwa'][$i]);
-                        $miejscowosci->setmiejscRodzaj($adres['miejscRodzaj'][$i]);
-                        $miejscowosci->setmiejscIIPWersja($adres['miejscIIPWersja'][$i]);
-                        $miejscowosci->setmiejscIIPId($adres['miejscIIPId'][$i]);
-                        $miejscowosci->setmiejscIIPPn($adres['miejscIIPPn'][$i]);
-                        $miejscowosci->setAddedBy($user);
-                        $miejscowosci->setModifyBy($user);
-
-                        $this->entityManager->persist($miejscowosci);
-                        $this->entityManager->flush();
-                        unset($miejscowosci);
                     }
 
-                    //Dodaje tylko wtedy gdy istnieje miejscowosc dla ulicy w bazie
+                    //Dodaje ulice tylko wtedy gdy istnieje miejscowosc dla ulicy w bazie
                     if ($mc) {
-
-                        //Dodaje aktualne rekordy do bazy, jeśli jeszcze ich nie ma w bazie.
+                        //Dodaje tylko aktualne rekordy do bazy, jeśli jeszcze ich nie ma w bazie.
                         if ($adres['cyklZyciaDo'][$i] == null) {
-
 
                             $ul = $uliceRepo->findOneBy(['ulIIPId' => $adres['ulIIPId'][$i]]);
                             //Jesli tego rekordu nie ma to dodaje
@@ -582,7 +529,6 @@ class FileManager
                                 $ulice->setAddedBy($user);
                                 $ulice->setModifyBy($user);
 
-
                                 $this->entityManager->persist($ulice);
                                 $this->entityManager->flush();
                             }
@@ -591,119 +537,60 @@ class FileManager
 
                     //Usuwam nieaktualne rekordy z bazy danych.
                     if ($adres['cyklZyciaDo'][$i] != null) {
-
-
                         $ul = $uliceRepo->findOneBy(['ulIIPId' => $adres['ulIIPId'][$i]]);
-
-
                         if ($ul) {
                             $this->entityManager->remove($ul);
                             $this->entityManager->flush();
                         }
                     }
-
                     unset($ulice);
-
                 }
 
             }
-
-//----------------------------------------------------------------------------------------------------------------------
-
-            $time_end = microtime(true);
-            $execution_time = ($time_end - $time_start) / 360;
-            echo '<b>Czas wrzucania pliku do bazy = </b>' . $execution_time . ' Sec <br><hr>';
         }
     }
 
 
 
 
-
-
-
-
-
-
-                // DZIAŁAJĄCE USUWANIE REKORDU Z BAZY
-
-                /*
-                $ul = $uliceRepo->findOneBy(['ulNazwaGlowna' => 'Osiedle II']);
-                var_dump($ul);
-
-                $this->entityManager->remove($ul);
-                $this->entityManager->flush();
-                */
-
-
-                // DZIAŁAJĄCA AKTUALIYACJA REKORDU W BAZIE
-
-                /*
-                $ul = $uliceRepo->findOneBy(['ulNazwaGlowna' => 'Osiedle II']);
-                var_dump($ul);
-                $ul->setulNazwaGlowna('New product name!');
-                $this->entityManager->flush();
-                */
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //Wrzuca paczke Zip do Bazy.
     public function importZip($fileName)
     {
         $fileName = $this->getZipFilePathByName($fileName);
 
 
+        //Wypakowuje pliki z paczki zip do katalogu tymczasowego.
         $zip = new ZipArchive();
-        if ($zip->open($fileName) !== TRUE)
-        {
-            echo "File not found<br>";
+        if ($zip->open($fileName) !== TRUE) {
+            echo "Brak pliku<br>";
             return;
         }
-        else
-        {
+        else {
             set_time_limit(5000);
             $zip->extractTo($this->temporaryFilesDir);
             $zip->close();
         }
-
-
         $files = array();
         $handle  = opendir($this->temporaryFilesDir);
         while (false !== ($entry = readdir($handle))) {
-
             if($entry=='.' || $entry=='..')
-                continue; // Skip current dir and parent dir.
-
+                continue;
             $files[] = $entry;
         }
 
 
-        // Return the list of uploaded files.
-        //return $files;
-        $time_start = microtime(true);
 
-        foreach($files as $file)
-        {
 
+
+
+        //Dla każdego pliku w paczce wywołuje funckje
+        //odpowiedzialną za wrzucenia pojedynczego pliku do bazy danych.
+        foreach($files as $file) {
            $this->importXml($file);
-
         }
-        $time_end = microtime(true);
 
 
-
-        $execution_time = ($time_end - $time_start)/360;
-
-
+        //Po wrzuceniu wszystkich plików do bazy usuwa cały folder tymczasowy.
         $dir = $this->temporaryFilesDir;
             foreach(scandir($dir) as $file) {
                 if ('.' === $file || '..' === $file) continue;

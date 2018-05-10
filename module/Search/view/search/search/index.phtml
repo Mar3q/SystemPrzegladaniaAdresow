@@ -1,0 +1,136 @@
+<?php $this->headScript()->appendFile('/js/awesomplete.js','text/javascript');?>
+<?php $this->headLink()->appendStylesheet('/css/awesomplete.css');?>
+
+<!-- Do Poprawy -->
+
+<script>
+    function getDataFromInput()
+    {
+
+        var wojewodztwo = document.getElementById("wojewodztwo").value;
+        var powiat = document.getElementById("powiat").value;
+        var gmina = document.getElementById("gmina").value;
+        var miejscowosc = document.getElementById("miejscowosc").value;
+        var ulica = document.getElementById("ulica").value;
+
+        return ulica;
+    }
+</script>
+
+<h1>Moduł Przeglądania (Do poprawy)</h1>
+<hr>
+<form method="post" action="<?= $this->url('search', ['action'=>'find']); ?>">
+    Wojewodztwo: <input type="text" id="wojewodztwo" value="" >
+    Powiat: <input type="text" id="powiat" value="" >
+    Gminy: <input type="text" id="gmina" value="" >
+    Miejscowosc: <input type="text" id="miejscowosc" name="miejscowosc" value="" >
+    Ulica: <input type="text" id="ulica" name="ulice" value="" >
+    <input type="submit" value="Szukaj">
+</form>
+
+<?php foreach($wojewodztwa as $wojewodztwo): ?>
+    <?php $wojewodztwoArray[] = $this->escapeHtml($wojewodztwo->getwojNazwa()); ?>
+<?php endforeach; ?>
+
+<?php foreach($powiaty as $powiat): ?>
+    <?php $powiatArray[] = $this->escapeHtml($powiat->getpowNazwa()); ?>
+<?php endforeach; ?>
+
+<?php foreach($gminy as $gmina): ?>
+    <?php $gminaArray[] = $this->escapeHtml($gmina->getgmNazwa()); ?>
+<?php endforeach; ?>
+
+<?php foreach($miejscowosci as $miejscowosc): ?>
+    <?php $miejscowoscArray[] = $this->escapeHtml($miejscowosc->getmiejscNazwa()); ?>
+<?php endforeach; ?>
+
+<?php foreach($ulice as $ulica): ?>
+    <?php $ulicaArray[] = $this->escapeHtml($ulica->getulNazwaGlowna()); ?>
+<?php endforeach; ?>
+
+
+<?php
+    //Konwertacja na JSON
+    $wojewodztwoJSON = json_encode($wojewodztwoArray, JSON_UNESCAPED_UNICODE );
+    $powiatJSON = json_encode($powiatArray, JSON_UNESCAPED_UNICODE );
+    $gminaJSON = json_encode($gminaArray, JSON_UNESCAPED_UNICODE );
+    $miejscowoscJSON = json_encode($miejscowoscArray, JSON_UNESCAPED_UNICODE );
+    $ulicaJSON = json_encode($ulicaArray, JSON_UNESCAPED_UNICODE );
+?>
+
+
+<?php
+// Podpowiedzi dla Wojewodztw
+$script = <<<EOT
+var input = document.getElementById("wojewodztwo");
+var awesomplete = new Awesomplete(input,{
+minChars: 0, 
+maxItems: 15
+});
+awesomplete.list =  $wojewodztwoJSON;
+EOT;
+$this->inlineScript()->appendScript($script);
+?>
+
+<?php
+// Podpowiedzi dla Powiatow
+$script = <<<EOT
+var input = document.getElementById("powiat");
+var awesomplete = new Awesomplete(input,{
+minChars: 0, 
+maxItems: 15
+});
+awesomplete.list =  $powiatJSON;
+EOT;
+$this->inlineScript()->appendScript($script);
+?>
+
+<?php
+// Podpowiedzi dla Gmin
+$script = <<<EOT
+var input = document.getElementById("gmina");
+var awesomplete = new Awesomplete(input,{
+minChars: 0, 
+maxItems: 15
+});
+awesomplete.list =  $gminaJSON;
+EOT;
+$this->inlineScript()->appendScript($script);
+?>
+
+<?php
+// Podpowiedzi dla Miejscowosci
+$script = <<<EOT
+var input = document.getElementById("miejscowosc");
+var awesomplete = new Awesomplete(input,{
+minChars: 0, 
+maxItems: 15
+});
+awesomplete.list =  $miejscowoscJSON;
+EOT;
+$this->inlineScript()->appendScript($script);
+?>
+
+<?php
+// Podpowiedzi dla Ulic
+$script = <<<EOT
+var input = document.getElementById("ulica");
+var awesomplete = new Awesomplete(input,{
+minChars: 0, 
+maxItems: 15
+});
+awesomplete.list =  $ulicaJSON;
+EOT;
+$this->inlineScript()->appendScript($script);
+?>
+
+
+<style>
+    table, th, td {
+        border: 2px solid grey;
+    }
+</style>
+
+
+
+

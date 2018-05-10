@@ -56,7 +56,7 @@
             <div id="menu" class=" col-md-2 " style="border-right: 5px solid red; border-top: 5px solid red; border-bottom: 5px solid red; border-left: 5px solid red; ">
                     <a href="<?= $this->url('home') ?>" class="active">Menu</a>
                     <a href="<?= $this->url('home') ?>">Informacje</a>
-                    <a href="<?= $this->url('search') ?>">Przegladaj</a>
+                    <a href="<?= $this->url('search') ?>">Przegladaj &nbsp;(Do zrobienia)</a>
                     <a href="<?= $this->url('files') ?>">Importuj</a>
                     <a href="<?= $this->url('users') ?>">Użytkownicy</a>         
             </div>
@@ -67,13 +67,13 @@
 
                 <footer>
                     <hr>
-                    <p>&copy;     <?= date('Y') ?> by Grupa pierwsza :-) </p>
+<!--                    <p>&copy;     --><?php /// date('Y') ?><!-- by Grupa pierwsza :-) </p>-->
                 </footer>
             </div>
 
         
         
         
-        <?= $this->inlineScript() ?>    
+        <?= $this->inlineScript() ?>
     </body>
 </html>
