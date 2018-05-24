@@ -11,13 +11,16 @@ return [
             'search' => [
                 'type' => Segment::class,
                 'options' => [
-                    'route' => '/search[/:action]',
+                    'route' => '/szukaj[/:action]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
                     ],
                     'defaults' => [
                         'controller' => Controller\SearchController::class,
                         'action'     => 'index',
+
+                        //Autoryzacja do API
+                        'isAuthorizationRequired' => false
                     ],
                 ],
             ],

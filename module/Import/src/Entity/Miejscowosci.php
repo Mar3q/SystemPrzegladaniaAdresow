@@ -14,7 +14,8 @@ class Miejscowosci
     /**
      * @ORM\Id
      * @ORM\Column(name="miejscIdTeryt")
-
+        @ORM\OneToMany(targetEntity="Search\Entity\Ulice", mappedBy="miejscowosci")
+     * @ORM\JoinColumn(name="miejscIdTeryt", referencedColumnName="miejscIdTeryt")
      */
     protected $miejscIdTeryt;
 
@@ -29,18 +30,18 @@ class Miejscowosci
      * @ORM\Column(name="miejscNazwa")
      */
 
-    protected $miejscNazwa ;
+    public $miejscNazwa ;
     
     /** 
      * @ORM\Column(name="miejscRodzaj")
      */
-    protected $miejscRodzaj;
+    public $miejscRodzaj;
 
     /**
      * @ORM\Column(name="miejscIIPWersja")
      */
 
-    protected  	$miejscIIPWersja;
+    public  	$miejscIIPWersja;
 
     /**
      * @ORM\Column(name="miejscIIPPn")

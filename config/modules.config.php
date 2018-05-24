@@ -34,6 +34,7 @@ return [
     'ZendDeveloperTools',
     'DoctrineModule',
     'DoctrineORMModule',
+    'RestApi',
     'Application',
     'User',
     'Import',

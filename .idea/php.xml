@@ -99,6 +99,8 @@
       <path value="$PROJECT_DIR$/vendor/zendframework/zend-servicemanager-di" />
       <path value="$PROJECT_DIR$/vendor/doctrine/orm" />
       <path value="$PROJECT_DIR$/vendor/zendframework/zend-console" />
+      <path value="$PROJECT_DIR$/vendor/firebase/php-jwt" />
+      <path value="$PROJECT_DIR$/vendor/multidots/zf3-rest-api" />
     </include_path>
   </component>
 </project>

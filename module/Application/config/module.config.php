@@ -33,7 +33,7 @@ return [
                         'action'     => 'index',
                     ],
                 ],
-            ],          
+            ],
        ],
     ],
     'controllers' => [

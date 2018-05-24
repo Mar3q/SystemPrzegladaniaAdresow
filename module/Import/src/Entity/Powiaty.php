@@ -14,21 +14,22 @@ class Powiaty
     /**
      * @ORM\Id
      * @ORM\Column(name="powIdTeryt")
-
+     * @ORM\OneToMany(targetEntity="Search\Entity\Gminy", mappedBy="powiaty")
+     * @ORM\JoinColumn(name="powIdTeryt", referencedColumnName="powIdTeryt")
      */
-    protected $powIdTeryt;
+    public $powIdTeryt;
 
     /**
      * @ORM\Column(name="wojIdTeryt")
      */
 
-    protected $wojIdTeryt ;
+    public $wojIdTeryt ;
 
     /** 
      * @ORM\Column(name="powNazwa")
      */
 
-    protected $powNazwa ;
+    public $powNazwa ;
     
     /** 
      * @ORM\Column(name="powIIPWersja")

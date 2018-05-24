@@ -499,7 +499,7 @@ function init() {
 }
 
 // Make sure to export Awesomplete on self when in a browser
-if (typeof self !== "undefined") {
+if (typeof Document !== "undefined") {
 	self.Awesomplete = _;
 }
 

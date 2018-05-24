@@ -14,39 +14,41 @@ class Wojewodztwa
     /**
      * @ORM\Id
      * @ORM\Column(name="wojIdTeryt")
+     * @ORM\OneToMany(targetEntity="Search\Entity\Powiaty", mappedBy="wojewodztwa")
+     * @ORM\JoinColumn(name="wojIdTeryt", referencedColumnName="wojIdTeryt")
 
      */
-    protected $wojIdTeryt;
+    public  $wojIdTeryt;
     /** 
      * @ORM\Column(name="wojNazwa")
      */
 
-    protected $wojNazwa ;
+    public $wojNazwa ;
     
     /** 
      * @ORM\Column(name="wojIIPWersja")
      */
-    protected  	$wojIIPWersja ;
+    public   	$wojIIPWersja ;
 
     /** 
      * @ORM\Column(name="wojIIPPn")
      */
-    protected $wojIIPPn;
+    public  $wojIIPPn;
 
     /** 
      * @ORM\Column(name="wojIIPId")
      */
-    protected $wojIIPId ;
+    public  $wojIIPId ;
 
     /**
      * @ORM\Column(name="added_by")
      */
-    protected $addedBy;
+    public  $addedBy;
 
     /**
      * @ORM\Column(name="modify_by")
      */
-    protected $modifyBy;
+    public  $modifyBy;
 
 
     public function getModifyBy(){

@@ -3,133 +3,505 @@
 
 <!-- Do Poprawy -->
 
+
+
 <script>
-    function getDataFromInput()
+
+
+
+
+
+
+
+function createRequest() {
+    try {
+        request = new XMLHttpRequest();
+    } catch (tryMS) {
+        try {
+            request = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (otherMS) {
+            try {
+                request = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (failed) {
+                request = null;
+            }
+        }
+    }
+    return request;
+}
+
+function szukajWojewodztwa() {
+    request = createRequest();
+    if (request == null)
+        alert("Unable to create request");
+    else
+    {
+        var wojNazwa = document.getElementById("wojewodztwo").value;
+        var woj = wojNazwa;
+        var url= "http://"+location.hostname+"/szukaj/wojewodztwa?nazwaWojewodztwa=" + woj;
+
+        console.log(url);
+        if(wojNazwa.length>0)
+        {
+            request.open("GET", url, true);
+            request.send(null);
+            request.onreadystatechange = sprawdzStatusWojewodztwa;
+        }
+    }
+}
+function sprawdzStatusWojewodztwa() {
+    if (request.status == 200 && request.readyState == 4 )
     {
 
-        var wojewodztwo = document.getElementById("wojewodztwo").value;
-        var powiat = document.getElementById("powiat").value;
-        var gmina = document.getElementById("gmina").value;
-        var miejscowosc = document.getElementById("miejscowosc").value;
-        var ulica = document.getElementById("ulica").value;
+        console.log(request.responseText);
+        var obj = JSON.parse(request.responseText);
+        console.log(obj);
+        var wj = new Array();
 
-        return ulica;
+        console.log("Dlugosc obiektu= " + obj.result.wojewodztwa.length);
+        for (let i=0; i<obj.result.wojewodztwa.length; i++)
+        {
+            console.log('licznik pętli: ' + i);
+            if(wj.indexOf( obj.result.wojewodztwa[i].wojNazwa) == -1)
+                wj.push( obj.result.wojewodztwa[i].wojNazwa);
+
+
+            console.log(wj[i]);
+
+        }
+        if (document.getElementById('wojewodztwo') === document.activeElement) {
+            podpowiedzi(wj, document.getElementById("wojewodztwo"));
+            document.getElementById('wojewodztwo').focus();
+        }
+
     }
+    else {
+        console.log("No response");
+        return;
+    }
+
+}
+
+
+function szukajPowiatu() {
+    request = createRequest();
+    if (request == null)
+        alert("Unable to create request");
+    else
+    {
+        var wojNazwa = document.getElementById("wojewodztwo").value;
+
+        var powNazwa = document.getElementById("powiat").value;
+
+
+        var url= "http://"+location.hostname+"/szukaj/powiatunapodstawienazwywojewodztwa?powNazwa="+powNazwa+"&wojNazwa="+wojNazwa;
+
+
+        console.log(url);
+        if(wojNazwa.length>0)
+        {
+            request.open("GET", url, true);
+            request.send(null);
+            request.onreadystatechange = sprawdzStatusPowiatua;
+        }
+    }
+}
+function sprawdzStatusPowiatua() {
+    if (request.status == 200 && request.readyState == 4 )
+    {
+
+        console.log(request.responseText);
+        var obj = JSON.parse(request.responseText);
+        console.log(obj);
+        var wj = new Array();
+
+        console.log("Dlugosc obiektu= " + obj.result.powiaty.length);
+        for (let i=0; i<obj.result.powiaty.length; i++)
+        {
+            console.log('licznik pętli: ' + i);
+            if(wj.indexOf( obj.result.powiaty[i].powjNazwa) == -1)
+                wj.push( obj.result.powiaty[i].powNazwa);
+
+
+            console.log(wj[i]);
+
+        }
+        if (document.getElementById('powiat') === document.activeElement) {
+            podpowiedzi(wj, document.getElementById("powiat"));
+            document.getElementById('powiat').focus();
+        }
+
+    }
+    else {
+        console.log("No response");
+        return;
+    }
+
+}
+
+function szukajGminy() {
+    request = createRequest();
+    if (request == null)
+        alert("Unable to create request");
+    else
+    {
+        var gmNazwa = document.getElementById("gmina").value;
+
+        var powNazwa = document.getElementById("powiat").value;
+
+
+        var url= "http://"+location.hostname+"/szukaj/gminynapodstawiepowiatu?powNazwa="+powNazwa+"&wojNazwa="+gmNazwa;
+
+
+        console.log(url);
+        if(gmNazwa.length>0)
+        {
+            request.open("GET", url, true);
+            request.send(null);
+            request.onreadystatechange = sprawdzStatusGminy;
+        }
+    }
+}
+function sprawdzStatusGminy() {
+    if (request.status == 200 && request.readyState == 4 )
+    {
+
+        console.log(request.responseText);
+        var obj = JSON.parse(request.responseText);
+        console.log(obj);
+        var wj = new Array();
+
+
+        for (let i=0; i<obj.result.gminy.length; i++)
+        {
+            console.log('licznik pętli: ' + i);
+            if(wj.indexOf( obj.result.gminy[i].gmNazwa) == -1)
+                wj.push( obj.result.gminy[i].gmNazwa);
+
+
+            console.log(wj[i]);
+
+        }
+        if (document.getElementById('gmina') === document.activeElement) {
+            podpowiedzi(wj, document.getElementById("gmina"));
+            document.getElementById('gmina').focus();
+        }
+
+    }
+    else {
+        console.log("No response");
+        return;
+    }
+
+}
+
+
+function szukajMiejscowosci() {
+    request = createRequest();
+    if (request == null)
+        alert("Unable to create request");
+    else
+    {
+        var gmNazwa = document.getElementById("gmina").value;
+
+        var mcNazwa = document.getElementById("miejscowosc").value;
+
+
+        var url= "http://"+location.hostname+"/szukaj/miejscowoscinapodstawiegminy?gmNazwa="+gmNazwa+"&miejscNazwa="+mcNazwa;
+
+        console.log(url);
+        if(mcNazwa.length>0)
+        {
+            request.open("GET", url, true);
+            request.send(null);
+            request.onreadystatechange = sprawdzStatusMiejscowosci;
+        }
+    }
+}
+function sprawdzStatusMiejscowosci() {
+    if (request.status == 200 && request.readyState == 4 )
+    {
+
+        console.log(request.responseText);
+        var obj = JSON.parse(request.responseText);
+        console.log(obj);
+        var wj = new Array();
+
+
+        for (let i=0; i<obj.result.miejscowosci.length; i++)
+        {
+            console.log('licznik pętli: ' + i);
+            if(wj.indexOf( obj.result.miejscowosci[i].miejscNazwa) == -1)
+                wj.push( obj.result.miejscowosci[i].miejscNazwa);
+
+
+            console.log(wj[i]);
+
+        }
+        if (document.getElementById('miejscowosc') === document.activeElement) {
+            podpowiedzi(wj, document.getElementById("miejscowosc"));
+            document.getElementById('miejscowosc').focus();
+        }
+
+    }
+    else {
+        console.log("No response");
+        return;
+    }
+
+}
+
+
+function szukajUlicy() {
+    request = createRequest();
+    if (request == null)
+        alert("Unable to create request");
+    else
+    {
+        var ulNazwa = document.getElementById("ulica").value;
+
+        var mcNazwa = document.getElementById("miejscowosc").value;
+
+
+        var url= "http://"+location.hostname+"/szukaj/ulicynapodstawiemiejscowosci?miejscNazwa="+mcNazwa+"&ulNazwaGlowna="+ulNazwa;
+
+
+        console.log(url);
+        if(ulNazwa.length>1)
+        {
+            request.open("GET", url, true);
+            request.send(null);
+            request.onreadystatechange = sprawdzStatusUlicy;
+        }
+    }
+}
+function sprawdzStatusUlicy() {
+    if (request.status == 200 && request.readyState == 4 )
+    {
+
+        console.log(request.responseText);
+        var obj = JSON.parse(request.responseText);
+        console.log(obj);
+        var wj = new Array();
+
+
+        for (let i=0; i<obj.result.ulice.length; i++)
+        {
+            console.log('licznik pętli: ' + i);
+            if(wj.indexOf( obj.result.ulice[i].ulNazwaGlowna) == -1)
+                wj.push( obj.result.ulice[i].ulNazwaGlowna);
+
+
+            console.log(wj[i]);
+
+        }
+        if (document.getElementById('ulica') === document.activeElement) {
+            podpowiedzi(wj, document.getElementById("ulica"));
+            document.getElementById('ulica').focus();
+        }
+
+    }
+    else {
+        console.log("No response");
+        return;
+    }
+
+}
+
+
+
+
+
+/*
+function sprawdzUlice() {
+
+    request = createRequest();
+    if (request == null)
+        alert("Unable to create request");
+    else
+    {
+        var wojNazwa = document.getElementById("ulica").value;
+        var woj = wojNazwa;
+        var url= "http://"+location.hostname+"/szukaj/ulicywzglednie?nazwaUlicy=" + woj;
+
+        console.log(url);
+        if(wojNazwa.length>2)
+        {
+
+            request.open("GET", url, true);
+            request.send(null);
+            request.onreadystatechange = sprawdzStatusUlicy;
+        }
+    }
+}
+
+
+
+//Sprawdza odpowiedz API, jesli jest OK to wyswietla podpowiedzi dla Wojewodztw.
+function sprawdzStatusUlicy() {
+
+    if (request.status == 200 && request.readyState == 4 )
+    {
+        console.log(request.responseText);
+        var obj = JSON.parse(request.responseText);
+
+
+        var ul = new Array();
+        var ms = new Array();
+        var gm = new Array();
+        var pw = new Array();
+        var wj = new Array();
+
+        //Zapisanie zwroconych wartosci do tablicy podpowiedzi
+        for (let i=0; i<obj.result.ulice.length; i++)
+        {
+            console.log('licznik pętli: ' + i);
+
+            if(ul.indexOf( obj.result.ulice[i].ulNazwaGlowna) == -1)
+                ul.push( obj.result.ulice[i].ulNazwaGlowna);
+            if(ms.indexOf( obj.result.ulice[i].miejscNazwa) == -1)
+                ms.push( obj.result.ulice[i].miejscNazwa);
+            if(gm.indexOf( obj.result.ulice[i].gmNazwa) == -1)
+                gm.push( obj.result.ulice[i].gmNazwa);
+            if(pw.indexOf( obj.result.ulice[i].powNazwa) == -1)
+                pw.push( obj.result.ulice[i].powNazwa);
+            if(wj.indexOf( obj.result.ulice[i].wojNazwa) == -1)
+                wj.push( obj.result.ulice[i].wojNazwa);
+
+
+            console.log(ms[i]);
+            console.log(gm[i]);
+        }
+
+
+
+
+            if (document.getElementById('ulica') === document.activeElement) {
+                podpowiedzi(ul, document.getElementById("ulica"));
+                document.getElementById('ulica').focus();
+            }
+
+            if (document.getElementById('miejscowosc') === document.activeElement) {
+                podpowiedzi(ms, document.getElementById("miejscowosc"));
+                document.getElementById('miejscowosc').focus();
+            }
+
+            if (document.getElementById('gmina') === document.activeElement) {
+                podpowiedzi(gm, document.getElementById("gmina"));
+                document.getElementById('gmina').focus();
+            }
+
+            if (document.getElementById('powiat') === document.activeElement) {
+                podpowiedzi(pw, document.getElementById("powiat"));
+                document.getElementById('powiat').focus();
+            }
+
+            if (document.getElementById('wojewodztwo') === document.activeElement) {
+                podpowiedzi(wj, document.getElementById("wojewodztwo"));
+                document.getElementById('wojewodztwo').focus();
+            }
+
+        }
+
+    else {
+        console.log("No response");
+        return;}
+}
+
+*/
+
+
+</script>
+<h1>Moduł Przeglądania</h1>
+<hr>
+
+    Wojewodztwo: <input type="text" id="wojewodztwo" onchange="szukajWojewodztwa()"  onblur="szukajWojewodztwa()"  oninput="szukajWojewodztwa()"  value="" >
+    Powiat: <input type="text" id="powiat"  onchange="szukajPowiatu()"  onblur="szukajPowiatu()"  oninput="szukajPowiatu()" value=""  >
+    Gminy: <input type="text" id="gmina" onchange="szukajGminy()"  onblur="szukajGminy()"  oninput="szukajGminy()" value="" >
+    Miejscowosc: <input type="text" id="miejscowosc" onchange="szukajMiejscowosci()"  onblur="szukajMiejscowosci()"  oninput="szukajMiejscowosci()" value="" >
+    Ulica: <input type="text" id="ulica"  onchange="szukajUlicy()"  onblur="szukajUlicy()"  oninput="szukajUlicy()" value="" >
+
+
+<hr>
+
+
+<script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Podpowiedzi, jako pierwszy argument przekazujemy tablice z podpowiedziami, drugi argument to uchwyt do input'a.
+
+function podpowiedzi(ul,input) {
+    var Singleton = (function () {
+        var instance;
+        function createInstance() {
+            var podpowiedzi = new Awesomplete(input, {
+                minChars: 2,
+                maxItems: 55,
+                list :ul
+            });
+
+            input.addEventListener('awesomplete-selectcomplete',function(){
+                podpowiedzi.close();
+                podpowiedzi.list =[];
+
+            });
+            return podpowiedzi;
+        }
+        return {
+            getInstance: function () {
+                if (!instance) {
+                    instance = createInstance();
+                }
+                return instance;
+            }
+        };
+    })();
+
+    var instance1 = Singleton.getInstance();
+    console.log(instance1);
+
+    return instance1;
+}
+
+
+
+
+
+
+
 </script>
 
-<h1>Moduł Przeglądania (Do poprawy)</h1>
-<hr>
-<form method="post" action="<?= $this->url('search', ['action'=>'find']); ?>">
-    Wojewodztwo: <input type="text" id="wojewodztwo" value="" >
-    Powiat: <input type="text" id="powiat" value="" >
-    Gminy: <input type="text" id="gmina" value="" >
-    Miejscowosc: <input type="text" id="miejscowosc" name="miejscowosc" value="" >
-    Ulica: <input type="text" id="ulica" name="ulice" value="" >
-    <input type="submit" value="Szukaj">
-</form>
-
-<?php foreach($wojewodztwa as $wojewodztwo): ?>
-    <?php $wojewodztwoArray[] = $this->escapeHtml($wojewodztwo->getwojNazwa()); ?>
-<?php endforeach; ?>
-
-<?php foreach($powiaty as $powiat): ?>
-    <?php $powiatArray[] = $this->escapeHtml($powiat->getpowNazwa()); ?>
-<?php endforeach; ?>
-
-<?php foreach($gminy as $gmina): ?>
-    <?php $gminaArray[] = $this->escapeHtml($gmina->getgmNazwa()); ?>
-<?php endforeach; ?>
-
-<?php foreach($miejscowosci as $miejscowosc): ?>
-    <?php $miejscowoscArray[] = $this->escapeHtml($miejscowosc->getmiejscNazwa()); ?>
-<?php endforeach; ?>
-
-<?php foreach($ulice as $ulica): ?>
-    <?php $ulicaArray[] = $this->escapeHtml($ulica->getulNazwaGlowna()); ?>
-<?php endforeach; ?>
 
 
-<?php
-    //Konwertacja na JSON
-    $wojewodztwoJSON = json_encode($wojewodztwoArray, JSON_UNESCAPED_UNICODE );
-    $powiatJSON = json_encode($powiatArray, JSON_UNESCAPED_UNICODE );
-    $gminaJSON = json_encode($gminaArray, JSON_UNESCAPED_UNICODE );
-    $miejscowoscJSON = json_encode($miejscowoscArray, JSON_UNESCAPED_UNICODE );
-    $ulicaJSON = json_encode($ulicaArray, JSON_UNESCAPED_UNICODE );
-?>
 
 
-<?php
-// Podpowiedzi dla Wojewodztw
-$script = <<<EOT
-var input = document.getElementById("wojewodztwo");
-var awesomplete = new Awesomplete(input,{
-minChars: 0, 
-maxItems: 15
-});
-awesomplete.list =  $wojewodztwoJSON;
-EOT;
-$this->inlineScript()->appendScript($script);
-?>
-
-<?php
-// Podpowiedzi dla Powiatow
-$script = <<<EOT
-var input = document.getElementById("powiat");
-var awesomplete = new Awesomplete(input,{
-minChars: 0, 
-maxItems: 15
-});
-awesomplete.list =  $powiatJSON;
-EOT;
-$this->inlineScript()->appendScript($script);
-?>
-
-<?php
-// Podpowiedzi dla Gmin
-$script = <<<EOT
-var input = document.getElementById("gmina");
-var awesomplete = new Awesomplete(input,{
-minChars: 0, 
-maxItems: 15
-});
-awesomplete.list =  $gminaJSON;
-EOT;
-$this->inlineScript()->appendScript($script);
-?>
-
-<?php
-// Podpowiedzi dla Miejscowosci
-$script = <<<EOT
-var input = document.getElementById("miejscowosc");
-var awesomplete = new Awesomplete(input,{
-minChars: 0, 
-maxItems: 15
-});
-awesomplete.list =  $miejscowoscJSON;
-EOT;
-$this->inlineScript()->appendScript($script);
-?>
-
-<?php
-// Podpowiedzi dla Ulic
-$script = <<<EOT
-var input = document.getElementById("ulica");
-var awesomplete = new Awesomplete(input,{
-minChars: 0, 
-maxItems: 15
-});
-awesomplete.list =  $ulicaJSON;
-EOT;
-$this->inlineScript()->appendScript($script);
-?>
 
 
-<style>
-    table, th, td {
-        border: 2px solid grey;
-    }
-</style>
+
+
+
+
+
+
+
+
+
+
+
 
 
 

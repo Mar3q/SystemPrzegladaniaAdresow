@@ -27,7 +27,7 @@ class Ulice
      * @ORM\Column(name="ulNazwaGlowna")
      */
 
-    protected $ulNazwaGlowna;
+    public $ulNazwaGlowna;
 
     /**
      * @ORM\Column(name="nrUlicy")
@@ -38,12 +38,12 @@ class Ulice
      * @ORM\Column(name="ulTyp")
      */
 
-    protected  	$ulTyp;
+    public  	$ulTyp;
 
     /**
      * @ORM\Column(name="ulIIPWersja")
      */
-    protected $ulIIPWersja;
+    public $ulIIPWersja;
 
     /**
      * @ORM\Column(name="ulIIPPn")

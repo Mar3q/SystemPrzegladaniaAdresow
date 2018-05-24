@@ -13,7 +13,8 @@ class Gminy
     /**
      * @ORM\Id
      * @ORM\Column(name="gmIdTeryt")
-
+     * @ORM\OneToMany(targetEntity="Search\Entity\Miejscowosci", mappedBy="miejscowosci")
+     * @ORM\JoinColumn(name="gmIdTeryt", referencedColumnName="gmIdTeryt")
      */
     protected $gmIdTeryt;
     /**
@@ -28,7 +29,7 @@ class Gminy
      * @ORM\Column(name="gmNazwa")
      */
 
-    protected $gmNazwa ;
+    public $gmNazwa ;
     
     /** 
      * @ORM\Column(name="gmIIPWersja")
