@@ -357,7 +357,7 @@ class SearchController extends ApiController
 
         $dlugoscNazwy = strlen($powNazwa);
 
-        $error = "Nie znaleziono gminy o podanej nazwie w bazie danych";
+        $error = "Nie znaleziono miejscowosci o podanej nazwie w bazie danych";
 
         if(empty($powNazwa)) {
             $this->apiResponse['Informacja'] = 'Wprowdzono błędną nazwe parametru, użyj parametru: nazwaUlicy';
@@ -400,7 +400,7 @@ class SearchController extends ApiController
         $dlugoscNazwy = strlen($powNazwa);
 
 
-        $error = "Nie znaleziono gminy o podanej nazwie w bazie danych";
+        $error = "Nie znaleziono ulicy o podanej nazwie w bazie danych";
 
         if(empty($powNazwa)) {
             $this->apiResponse['Informacja'] = 'Wprowdzono błędną nazwe parametru, użyj parametru: nazwaUlicy';
